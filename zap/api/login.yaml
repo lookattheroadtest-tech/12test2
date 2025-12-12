@@ -1,0 +1,27 @@
+# zap/api/login.yaml
+# Minimal OpenAPI – ZAP will auto-generate thousands of attack payloads from this
+openapi: 3.0.3
+info:
+  title: TestFire Login POST Only
+  version: 1.0.0
+servers:
+  - url: https://demo.testfire.net
+paths:
+  /login:
+    post:
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
