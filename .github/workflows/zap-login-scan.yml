@@ -13,11 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: ZAP API Scan (Fixed Bearer Token)
+      - name: ZAP API Scan (Working Path + Bearer Token)
         uses: zaproxy/action-api-scan@v0.10.0
         with:
+          # THIS IS THE KEY FIX — full path inside container
+          target: /zap/wrk/zap/api/admin-adduser-fixed-token.yaml
           format: openapi
-          target: zap/api/admin-adduser-fixed-token.yaml
           alpha: true
           attack_mode: true
           timeout: 300
@@ -31,3 +32,4 @@ jobs:
             report_html.html
             report_json.json
             report_md.md
+          retention-days: 30
