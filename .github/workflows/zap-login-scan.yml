@@ -1,0 +1,33 @@
+name: ZAP DAST - Login Only
+
+on:
+  push:
+    paths:
+      - 'zap/api/login.yaml'
+  workflow_dispatch:
+
+jobs:
+  zap-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: OWASP ZAP Full Scan (Login POST)
+        uses: zaproxy/action-full-scan@v0.11.0
+        with:
+          format: openapi
+          target: zap/api/login.yaml          # ← your clean file
+          allowIssueWriting: false
+          cmd_options: >-
+            -config api.disablekey=true
+            -config scanner.attackOnStart=true
+            -config view.mode=attack
+            -config connection.timeoutInSecs=180
+
+      - name: Upload ZAP Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-login-report
+          path: zap_report.html
